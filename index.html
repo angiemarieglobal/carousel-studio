@@ -6,7 +6,7 @@
 <title>AMG Carousel Studio | Angie Marie Global</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Forum&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Forum&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <style>
@@ -130,6 +130,54 @@ body {
 }
 
 .type-btn.active .type-slides {
+  opacity: 0.8;
+}
+
+/* Style Toggle */
+.style-toggle {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.style-btn {
+  flex: 1;
+  padding: 14px 12px;
+  border: 1.5px solid rgba(44,62,80,0.15);
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.style-btn:hover {
+  border-color: var(--teal);
+  background: rgba(74,107,102,0.04);
+}
+
+.style-btn.active {
+  border-color: var(--teal);
+  background: var(--teal);
+  color: var(--cream);
+}
+
+.style-btn .style-name {
+  font-size: 13px;
+  font-weight: 500;
+  display: block;
+}
+
+.style-btn .style-desc {
+  font-size: 10px;
+  font-weight: 400;
+  opacity: 0.6;
+  margin-top: 2px;
+  display: block;
+}
+
+.style-btn.active .style-desc {
   opacity: 0.8;
 }
 
@@ -524,6 +572,20 @@ body {
   <!-- LEFT: Controls -->
   <div class="controls-panel">
 
+    <div class="section-label">Style</div>
+    <div class="style-toggle">
+      <button class="style-btn active" data-style="classic" onclick="selectStyle(this)">
+        <span class="style-name">Classic</span>
+        <span class="style-desc">Dark, structured, centred</span>
+      </button>
+      <button class="style-btn" data-style="editorial" onclick="selectStyle(this)">
+        <span class="style-name">Editorial</span>
+        <span class="style-desc">Warm, flowing, left-aligned</span>
+      </button>
+    </div>
+
+    <div class="section-divider"></div>
+
     <div class="section-label">Carousel Type</div>
     <div class="type-grid">
       <button class="type-btn active" data-type="signature" onclick="selectType(this)">
@@ -651,6 +713,7 @@ body {
 <script>
 // ========== STATE ==========
 let state = {
+  style: 'classic',
   type: 'signature',
   scheme: 'classic',
   pillar: 'regulation',
@@ -707,6 +770,46 @@ const SCHEMES = {
   }
 };
 
+// ========== EDITORIAL SCHEMES ==========
+const EDITORIAL_SCHEMES = {
+  cream: {
+    bg: '#F4EFE7', text: '#2C3E50', accent: '#C97958',
+    hookFont: 'Caveat', bodyFont: 'Montserrat', headlineFont: 'Playfair Display',
+    hookBg: '#F4EFE7', ctaBg: '#F4EFE7',
+    ctaAccent: '#C97958', subtleText: '#8B7D6B'
+  },
+  linen: {
+    bg: '#FAF6F0', text: '#3D3229', accent: '#B8856C',
+    hookFont: 'Caveat', bodyFont: 'Montserrat', headlineFont: 'Playfair Display',
+    hookBg: '#FAF6F0', ctaBg: '#FAF6F0',
+    ctaAccent: '#B8856C', subtleText: '#9E8E7E'
+  },
+  blush: {
+    bg: '#F9F0EC', text: '#3A2F2F', accent: '#C97958',
+    hookFont: 'Caveat', bodyFont: 'Montserrat', headlineFont: 'Playfair Display',
+    hookBg: '#F9F0EC', ctaBg: '#F9F0EC',
+    ctaAccent: '#C97958', subtleText: '#A8918A'
+  },
+  sage_ed: {
+    bg: '#F0F2ED', text: '#2C3E35', accent: '#7A8B6F',
+    hookFont: 'Caveat', bodyFont: 'Montserrat', headlineFont: 'Playfair Display',
+    hookBg: '#F0F2ED', ctaBg: '#F0F2ED',
+    ctaAccent: '#7A8B6F', subtleText: '#8B9682'
+  },
+  sand: {
+    bg: '#EDE8DF', text: '#2C3E50', accent: '#C9A96E',
+    hookFont: 'Caveat', bodyFont: 'Montserrat', headlineFont: 'Playfair Display',
+    hookBg: '#EDE8DF', ctaBg: '#EDE8DF',
+    ctaAccent: '#C9A96E', subtleText: '#9E9282'
+  },
+  white: {
+    bg: '#FFFFFF', text: '#2C3E50', accent: '#C97958',
+    hookFont: 'Caveat', bodyFont: 'Montserrat', headlineFont: 'Playfair Display',
+    hookBg: '#FFFFFF', ctaBg: '#FFFFFF',
+    ctaAccent: '#C97958', subtleText: '#A0A0A0'
+  }
+};
+
 // ========== CTA MAP ==========
 const CTA_MAP = {
   audit: { context: 'THREE MINUTES', headline: 'Take the Baseline Audit.', subline: 'Find out where your nervous system is actually operating from.', button: 'Start the 3-Minute Audit', url: 'angiemarieglobal.com/baseline' },
@@ -724,6 +827,60 @@ const PILLAR_LABELS = {
 };
 
 // ========== UI HANDLERS ==========
+function selectStyle(btn) {
+  document.querySelectorAll('.style-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  state.style = btn.dataset.style;
+  updateColourSwatches();
+}
+
+function updateColourSwatches() {
+  const row = document.querySelector('.colour-row');
+  row.innerHTML = '';
+
+  if (state.style === 'editorial') {
+    const schemes = [
+      { key: 'cream', bg: '#F4EFE7', accent: '#C97958', label: 'Cream' },
+      { key: 'linen', bg: '#FAF6F0', accent: '#B8856C', label: 'Linen' },
+      { key: 'blush', bg: '#F9F0EC', accent: '#C97958', label: 'Blush' },
+      { key: 'sage_ed', bg: '#F0F2ED', accent: '#7A8B6F', label: 'Sage' },
+      { key: 'sand', bg: '#EDE8DF', accent: '#C9A96E', label: 'Sand' },
+      { key: 'white', bg: '#FFFFFF', accent: '#C97958', label: 'White' }
+    ];
+    schemes.forEach((s, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'colour-btn' + (i === 0 ? ' active' : '');
+      btn.dataset.scheme = s.key;
+      btn.onclick = function() { selectColour(this); };
+      btn.title = s.label;
+      btn.style.background = `linear-gradient(135deg, ${s.bg} 60%, ${s.accent} 60%)`;
+      btn.innerHTML = `<span class="colour-label">${s.label}</span>`;
+      row.appendChild(btn);
+    });
+    state.scheme = 'cream';
+  } else {
+    const schemes = [
+      { key: 'classic', bg1: 'var(--navy)', bg2: 'var(--gold)', label: 'Classic' },
+      { key: 'ocean', bg1: 'var(--teal)', bg2: 'var(--cream)', label: 'Ocean' },
+      { key: 'warm', bg1: 'var(--terracotta)', bg2: 'var(--cream)', label: 'Warm' },
+      { key: 'minimal', bg1: 'var(--black)', bg2: 'var(--cream)', label: 'Minimal' },
+      { key: 'sage', bg1: 'var(--sage)', bg2: 'var(--navy)', label: 'Sage' },
+      { key: 'golden', bg1: 'var(--gold)', bg2: 'var(--navy)', label: 'Golden' }
+    ];
+    schemes.forEach((s, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'colour-btn' + (i === 0 ? ' active' : '');
+      btn.dataset.scheme = s.key;
+      btn.onclick = function() { selectColour(this); };
+      btn.title = s.label;
+      btn.style.background = `linear-gradient(135deg, ${s.bg1} 50%, ${s.bg2} 50%)`;
+      btn.innerHTML = `<span class="colour-label">${s.label}</span>`;
+      row.appendChild(btn);
+    });
+    state.scheme = 'classic';
+  }
+}
+
 function selectType(btn) {
   document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
@@ -1048,6 +1205,180 @@ function drawSlide(canvas, slide, scheme, slideNum, totalSlides) {
   ctx.globalAlpha = 1;
 }
 
+// ========== EDITORIAL RENDERING ==========
+function drawEditorialSlide(canvas, slide, scheme, slideNum, totalSlides) {
+  const ctx = canvas.getContext('2d');
+  const S = EDITORIAL_SCHEMES[scheme];
+  const headSize = state.headlineSize;
+
+  // Fill background (same warm tone for every slide)
+  ctx.fillStyle = S.bg;
+  ctx.fillRect(0, 0, 1080, 1080);
+
+  // No geometric accents. No circles. Clean space.
+
+  const pad = 120;
+  const contentW = 1080 - pad * 2;
+
+  if (slide.type === 'hook') {
+    // Editorial hook: script font, centred, large, warm
+
+    // Optional label in small caps
+    let y = 400;
+    if (slide.label) {
+      ctx.font = '500 20px Montserrat';
+      ctx.fillStyle = S.accent;
+      ctx.globalAlpha = 0.7;
+      ctx.textAlign = 'center';
+      ctx.fillText(slide.label.toUpperCase(), 540, 340);
+      ctx.globalAlpha = 1;
+      y = 420;
+    }
+
+    // Main hook in script font
+    ctx.fillStyle = S.text;
+    ctx.textAlign = 'center';
+
+    const rawLines = slide.lines || [''];
+    let hookFontSize = Math.round(headSize * 1.1);
+    let wrappedLines = [];
+    const maxHookHeight = slide.label ? 480 : 600;
+
+    while (hookFontSize >= 40) {
+      ctx.font = `600 ${hookFontSize}px ${S.hookFont}`;
+      wrappedLines = [];
+      rawLines.forEach(raw => {
+        const wrapped = wrapTextLines(ctx, raw, contentW);
+        wrapped.forEach(wl => wrappedLines.push(wl));
+      });
+      const testLineH = hookFontSize * 1.25;
+      const testTotalH = wrappedLines.length * testLineH;
+      if (testTotalH <= maxHookHeight) break;
+      hookFontSize -= 2;
+    }
+
+    ctx.font = `600 ${hookFontSize}px ${S.hookFont}`;
+    const lineHeight = hookFontSize * 1.25;
+    const totalH = wrappedLines.length * lineHeight;
+    let startY = slide.label ? y + 20 : (1080 - totalH) / 2 + hookFontSize * 0.3;
+
+    wrappedLines.forEach((line, i) => {
+      ctx.fillText(line, 540, startY + i * lineHeight);
+    });
+
+    // No divider. Breathing room only.
+
+  } else if (slide.type === 'cta') {
+    const cta = CTA_MAP[state.cta];
+
+    // Editorial CTA: mixed fonts, warm, centred
+
+    // Small context label
+    ctx.font = '400 18px Montserrat';
+    ctx.fillStyle = S.subtleText;
+    ctx.textAlign = 'center';
+    ctx.fillText(cta.context, 540, 360);
+
+    // Main CTA in serif
+    ctx.font = `500 ${Math.round(headSize * 0.6)}px ${S.headlineFont}`;
+    ctx.fillStyle = S.text;
+    const ctaLines = wrapTextLines(ctx, cta.headline, contentW - 40);
+    const ctaLineH = Math.round(headSize * 0.6) * 1.4;
+    let ctaY = 430;
+    ctaLines.forEach((line, i) => {
+      ctx.fillText(line, 540, ctaY + i * ctaLineH);
+    });
+    ctaY += ctaLines.length * ctaLineH + 10;
+
+    // Subline in lighter weight
+    ctx.font = '300 24px Montserrat';
+    ctx.fillStyle = S.subtleText;
+    const subLines = wrapTextLines(ctx, cta.subline, contentW - 80);
+    subLines.forEach((line, i) => {
+      ctx.fillText(line, 540, ctaY + 20 + i * 34);
+    });
+    ctaY += subLines.length * 34 + 50;
+
+    // Keyword in script font (e.g. "BASELINE" in Caveat)
+    ctx.font = `600 52px ${S.hookFont}`;
+    ctx.fillStyle = S.accent;
+    ctx.fillText(cta.button, 540, ctaY + 20);
+
+    // URL below
+    ctx.font = '300 18px Montserrat';
+    ctx.fillStyle = S.subtleText;
+    ctx.globalAlpha = 0.6;
+    ctx.fillText(cta.url, 540, ctaY + 70);
+    ctx.globalAlpha = 1;
+
+  } else {
+    // Editorial body slide: left-aligned, serif headline, flowing body
+
+    const anchor = slide.anchor || '';
+    const supporting = slide.supporting || [];
+
+    // Anchor line in Playfair Display (serif)
+    const anchorSize = Math.round(headSize * 0.55);
+    ctx.font = `600 ${anchorSize}px ${S.headlineFont}`;
+    ctx.fillStyle = S.text;
+    ctx.textAlign = 'left';
+
+    const anchorLines = wrapTextLines(ctx, anchor, contentW);
+    const anchorLineH = anchorSize * 1.45;
+
+    // Calculate total height for vertical centering
+    const bodyLineH = 36;
+    let totalSupportLines = 0;
+    supporting.forEach(line => {
+      ctx.font = '400 26px Montserrat';
+      totalSupportLines += wrapTextLines(ctx, line, contentW).length;
+    });
+    const totalContentH = anchorLines.length * anchorLineH + 30 + totalSupportLines * bodyLineH + (supporting.length - 1) * 10;
+    let startY = Math.max(pad + 40, (1080 - totalContentH) / 2);
+
+    // Draw anchor
+    ctx.font = `600 ${anchorSize}px ${S.headlineFont}`;
+    ctx.fillStyle = S.text;
+    anchorLines.forEach((line, i) => {
+      ctx.fillText(line, pad, startY + i * anchorLineH);
+    });
+
+    // Small accent line (thin, short, in accent colour)
+    const lineY = startY + anchorLines.length * anchorLineH + 15;
+    ctx.fillStyle = S.accent;
+    ctx.globalAlpha = 0.5;
+    ctx.fillRect(pad, lineY, 50, 1.5);
+    ctx.globalAlpha = 1;
+
+    // Supporting lines
+    ctx.font = '400 26px Montserrat';
+    ctx.fillStyle = S.text;
+    ctx.globalAlpha = 0.75;
+    let supY = lineY + 30;
+
+    supporting.forEach((line, idx) => {
+      // Check for **bold** markers and render mixed weight
+      const wrapped = wrapTextLines(ctx, line, contentW);
+      wrapped.forEach(wl => {
+        ctx.fillText(wl, pad, supY);
+        supY += bodyLineH;
+      });
+      supY += 10;
+    });
+    ctx.globalAlpha = 1;
+  }
+
+  // Watermark: bottom centre, small, subtle
+  ctx.font = '400 18px Montserrat';
+  ctx.fillStyle = S.subtleText;
+  ctx.globalAlpha = 0.35;
+  ctx.textAlign = 'center';
+  ctx.fillText('@angiemarieglobal', 540, 1080 - pad + 30);
+  ctx.globalAlpha = 1;
+
+  // No slide counter. No pillar tag. Clean.
+}
+
 // Helper: wrap text and return lines array
 function wrapTextLines(ctx, text, maxWidth) {
   const words = text.split(' ');
@@ -1152,8 +1483,12 @@ async function generateCarousel() {
     // Small delay for UI updates
     await new Promise(r => setTimeout(r, 80));
 
-    // Render slide
-    drawSlide(canvas, slides[i], state.scheme, i + 1, slides.length);
+    // Render slide (editorial or classic)
+    if (state.style === 'editorial') {
+      drawEditorialSlide(canvas, slides[i], state.scheme, i + 1, slides.length);
+    } else {
+      drawSlide(canvas, slides[i], state.scheme, i + 1, slides.length);
+    }
 
     // Convert to blob
     const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
@@ -1218,7 +1553,7 @@ async function downloadZip() {
 
   const content = await zip.generateAsync({ type: 'blob' });
   const timestamp = new Date().toISOString().slice(0, 10);
-  saveAs(content, `amg-carousel-${state.scheme}-${timestamp}.zip`);
+  saveAs(content, `amg-carousel-${state.style}-${state.scheme}-${timestamp}.zip`);
 
   showToast('ZIP downloaded');
 }
@@ -1230,6 +1565,11 @@ document.addEventListener('DOMContentLoaded', () => {
   document.fonts.load('400 24px Montserrat');
   document.fonts.load('300 24px Montserrat');
   document.fonts.load('500 24px Montserrat');
+  document.fonts.load('600 48px Caveat');
+  document.fonts.load('400 48px Playfair Display');
+  document.fonts.load('500 48px Playfair Display');
+  document.fonts.load('600 48px Playfair Display');
+  document.fonts.load('600italic 48px Playfair Display');
 });
 </script>
 </body>
