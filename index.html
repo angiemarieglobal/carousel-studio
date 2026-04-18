@@ -898,23 +898,42 @@ function drawSlide(canvas, slide, scheme, slideNum, totalSlides) {
       y += 60;
     }
 
-    // Main hook lines
-    ctx.font = `400 ${headSize}px Forum`;
+    // Main hook lines (with word wrap and auto-sizing)
     ctx.fillStyle = textColor;
     ctx.textAlign = 'center';
 
-    const lines = slide.lines || [''];
-    const lineHeight = headSize * 1.3;
-    const totalH = lines.length * lineHeight;
-    let startY = slide.label ? y + 20 : (1080 - totalH) / 2 + headSize * 0.3;
+    const rawLines = slide.lines || [''];
 
-    lines.forEach((line, i) => {
+    // Auto-size: start at headSize and shrink until all wrapped lines fit
+    let hookFontSize = headSize;
+    let wrappedLines = [];
+    const maxHookHeight = slide.label ? 500 : 700; // available vertical space
+
+    while (hookFontSize >= 36) {
+      ctx.font = `400 ${hookFontSize}px Forum`;
+      wrappedLines = [];
+      rawLines.forEach(raw => {
+        const wrapped = wrapTextLines(ctx, raw, contentW);
+        wrapped.forEach(wl => wrappedLines.push(wl));
+      });
+      const testLineH = hookFontSize * 1.3;
+      const testTotalH = wrappedLines.length * testLineH;
+      if (testTotalH <= maxHookHeight) break;
+      hookFontSize -= 2;
+    }
+
+    ctx.font = `400 ${hookFontSize}px Forum`;
+    const lineHeight = hookFontSize * 1.3;
+    const totalH = wrappedLines.length * lineHeight;
+    let startY = slide.label ? y + 20 : (1080 - totalH) / 2 + hookFontSize * 0.3;
+
+    wrappedLines.forEach((line, i) => {
       ctx.fillText(line, 540, startY + i * lineHeight);
     });
 
     // Divider
     ctx.fillStyle = S.divider;
-    ctx.fillRect(520, startY + lines.length * lineHeight + 30, 40, 2);
+    ctx.fillRect(520, startY + wrappedLines.length * lineHeight + 30, 40, 2);
 
   } else if (slide.type === 'cta') {
     const cta = CTA_MAP[state.cta];
