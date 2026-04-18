@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMG Carousel Studio | Angie Marie Global</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Forum&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<style>
+:root {
+  --cream: #F4EFE7;
+  --sage: #A8B5A6;
+  --teal: #4A6B66;
+  --terracotta: #C97958;
+  --gold: #E8C88E;
+  --navy: #2C3E50;
+  --black: #000000;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: var(--cream);
+  color: var(--navy);
+  min-height: 100vh;
+}
+
+.app-header {
+  background: var(--navy);
+  padding: 24px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.app-header h1 {
+  font-family: 'Forum', serif;
+  color: var(--cream);
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.app-header .subtitle {
+  font-family: 'Montserrat', sans-serif;
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.main-container {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  min-height: calc(100vh - 80px);
+}
+
+/* Left Panel */
+.controls-panel {
+  background: white;
+  padding: 32px;
+  border-right: 1px solid rgba(44,62,80,0.1);
+  overflow-y: auto;
+  max-height: calc(100vh - 80px);
+}
+
+.section-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 12px;
+}
+
+.section-divider {
+  width: 40px;
+  height: 1px;
+  background: var(--gold);
+  margin: 24px 0;
+}
+
+/* Carousel Type Grid */
+.type-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.type-btn {
+  padding: 14px 12px;
+  border: 1.5px solid rgba(44,62,80,0.15);
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.type-btn:hover {
+  border-color: var(--teal);
+  background: rgba(74,107,102,0.04);
+}
+
+.type-btn.active {
+  border-color: var(--teal);
+  background: var(--teal);
+  color: var(--cream);
+}
+
+.type-btn .type-name {
+  font-size: 13px;
+  font-weight: 500;
+  display: block;
+}
+
+.type-btn .type-slides {
+  font-size: 10px;
+  font-weight: 400;
+  opacity: 0.6;
+  margin-top: 2px;
+  display: block;
+}
+
+.type-btn.active .type-slides {
+  opacity: 0.8;
+}
+
+/* Colour Scheme */
+.colour-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.colour-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.colour-btn:hover { transform: scale(1.08); }
+
+.colour-btn.active {
+  border-color: var(--navy);
+  box-shadow: 0 0 0 2px var(--gold);
+}
+
+.colour-btn .colour-label {
+  font-size: 7px;
+  font-weight: 500;
+  text-align: center;
+  padding: 2px;
+  background: rgba(255,255,255,0.9);
+  color: var(--navy);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+/* Form Inputs */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+
+.form-group select,
+.form-group input[type="range"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid rgba(44,62,80,0.15);
+  border-radius: 6px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  color: var(--navy);
+  background: white;
+  appearance: auto;
+}
+
+.form-group select:focus {
+  outline: none;
+  border-color: var(--teal);
+}
+
+.prompt-textarea {
+  width: 100%;
+  min-height: 200px;
+  padding: 14px;
+  border: 1.5px solid rgba(44,62,80,0.15);
+  border-radius: 8px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--navy);
+  resize: vertical;
+}
+
+.prompt-textarea:focus {
+  outline: none;
+  border-color: var(--teal);
+}
+
+.prompt-textarea::placeholder {
+  color: var(--sage);
+}
+
+/* Size Slider */
+.size-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.size-row input[type="range"] {
+  flex: 1;
+  accent-color: var(--teal);
+}
+
+.size-value {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--teal);
+  min-width: 40px;
+  text-align: right;
+}
+
+/* Buttons */
+.btn-generate {
+  width: 100%;
+  padding: 16px;
+  background: var(--teal);
+  color: var(--cream);
+  border: none;
+  border-radius: 8px;
+  font-family: 'Forum', serif;
+  font-size: 18px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 8px;
+}
+
+.btn-generate:hover {
+  background: var(--navy);
+}
+
+.btn-generate:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-generate.generating {
+  background: var(--terracotta);
+  cursor: wait;
+}
+
+/* Right Panel - Preview */
+.preview-panel {
+  padding: 32px;
+  overflow-y: auto;
+  max-height: calc(100vh - 80px);
+  background: #f8f6f2;
+}
+
+.preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.preview-header h2 {
+  font-family: 'Forum', serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--navy);
+}
+
+.btn-download {
+  padding: 12px 24px;
+  background: var(--navy);
+  color: var(--cream);
+  border: none;
+  border-radius: 6px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-download:hover {
+  background: var(--teal);
+}
+
+.btn-download:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-download svg {
+  width: 16px;
+  height: 16px;
+}
+
+.slides-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.slide-card {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(44,62,80,0.08);
+}
+
+.slide-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.slide-card .slide-label {
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--teal);
+  letter-spacing: 0.5px;
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  text-align: center;
+}
+
+.empty-state .icon-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(74,107,102,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.empty-state h3 {
+  font-family: 'Forum', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+
+.empty-state p {
+  font-size: 13px;
+  color: var(--sage);
+  max-width: 320px;
+  line-height: 1.5;
+}
+
+/* Progress Bar */
+.progress-container {
+  margin-top: 12px;
+  display: none;
+}
+
+.progress-container.visible {
+  display: block;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(44,62,80,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--teal);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+  width: 0%;
+}
+
+.progress-text {
+  font-size: 11px;
+  color: var(--sage);
+  margin-top: 6px;
+  text-align: center;
+}
+
+/* Status Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--navy);
+  color: var(--cream);
+  padding: 14px 20px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 400;
+  box-shadow: 0 4px 16px rgba(44,62,80,0.2);
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.toast.visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .main-container {
+    grid-template-columns: 1fr;
+  }
+  .controls-panel {
+    max-height: none;
+  }
+  .preview-panel {
+    max-height: none;
+  }
+}
+
+/* Caption Section */
+.caption-output {
+  margin-top: 24px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid rgba(44,62,80,0.08);
+  display: none;
+}
+
+.caption-output.visible { display: block; }
+
+.caption-output h3 {
+  font-family: 'Forum', serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--navy);
+  margin-bottom: 10px;
+}
+
+.caption-text {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--navy);
+  white-space: pre-wrap;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.btn-copy {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background: transparent;
+  border: 1.5px solid var(--teal);
+  color: var(--teal);
+  border-radius: 6px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-copy:hover {
+  background: var(--teal);
+  color: var(--cream);
+}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div>
+    <h1>AMG Carousel Studio</h1>
+  </div>
+  <span class="subtitle">Angie Marie Global</span>
+</header>
+
+<div class="main-container">
+  <!-- LEFT: Controls -->
+  <div class="controls-panel">
+
+    <div class="section-label">Carousel Type</div>
+    <div class="type-grid">
+      <button class="type-btn active" data-type="signature" onclick="selectType(this)">
+        <span class="type-name">AMG Signature</span>
+        <span class="type-slides">7 slides</span>
+      </button>
+      <button class="type-btn" data-type="authority" onclick="selectType(this)">
+        <span class="type-name">Authority</span>
+        <span class="type-slides">10 slides</span>
+      </button>
+      <button class="type-btn" data-type="howto" onclick="selectType(this)">
+        <span class="type-name">How-To</span>
+        <span class="type-slides">10 slides</span>
+      </button>
+      <button class="type-btn" data-type="mythbusting" onclick="selectType(this)">
+        <span class="type-name">Myth-Busting</span>
+        <span class="type-slides">10 slides</span>
+      </button>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="section-label">Colour Scheme</div>
+    <div class="colour-row">
+      <button class="colour-btn active" data-scheme="classic" onclick="selectColour(this)" style="background: linear-gradient(135deg, var(--navy) 50%, var(--gold) 50%);" title="Classic">
+        <span class="colour-label">Classic</span>
+      </button>
+      <button class="colour-btn" data-scheme="ocean" onclick="selectColour(this)" style="background: linear-gradient(135deg, var(--teal) 50%, var(--cream) 50%);" title="Ocean">
+        <span class="colour-label">Ocean</span>
+      </button>
+      <button class="colour-btn" data-scheme="warm" onclick="selectColour(this)" style="background: linear-gradient(135deg, var(--terracotta) 50%, var(--cream) 50%);" title="Warm">
+        <span class="colour-label">Warm</span>
+      </button>
+      <button class="colour-btn" data-scheme="minimal" onclick="selectColour(this)" style="background: linear-gradient(135deg, var(--black) 50%, var(--cream) 50%);" title="Minimal">
+        <span class="colour-label">Minimal</span>
+      </button>
+      <button class="colour-btn" data-scheme="sage" onclick="selectColour(this)" style="background: linear-gradient(135deg, var(--sage) 50%, var(--navy) 50%);" title="Sage">
+        <span class="colour-label">Sage</span>
+      </button>
+      <button class="colour-btn" data-scheme="golden" onclick="selectColour(this)" style="background: linear-gradient(135deg, var(--gold) 50%, var(--navy) 50%);" title="Golden">
+        <span class="colour-label">Golden</span>
+      </button>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="section-label">Carousel Prompt</div>
+    <textarea class="prompt-textarea" id="promptInput" placeholder="Paste your carousel content here. Include slide copy, or describe the topic and the studio will generate slide layouts for you."></textarea>
+
+    <div class="section-divider"></div>
+
+    <div class="form-group">
+      <label>Content Pillar</label>
+      <select id="pillarSelect">
+        <option value="regulation">Regulation / Reset</option>
+        <option value="identity">Identity / Belief Shift</option>
+        <option value="abundance">Abundance</option>
+        <option value="proof">Living Proof / NUSA</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Call to Action</label>
+      <select id="ctaSelect">
+        <option value="audit">Take the 3-Minute Baseline Audit</option>
+        <option value="baseline">DM me BASELINE</option>
+        <option value="reset">Start the 7-Day Micro Reset</option>
+        <option value="save">Save this for later</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Headline Size</label>
+      <div class="size-row">
+        <input type="range" id="headlineSize" min="60" max="120" value="90" oninput="document.getElementById('sizeVal').textContent = this.value + 'px'">
+        <span class="size-value" id="sizeVal">90px</span>
+      </div>
+    </div>
+
+    <button class="btn-generate" id="generateBtn" onclick="generateCarousel()">
+      Generate Carousel
+    </button>
+
+    <div class="progress-container" id="progressContainer">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-text" id="progressText">Preparing slides...</div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Preview -->
+  <div class="preview-panel">
+    <div class="preview-header">
+      <h2>Preview</h2>
+      <button class="btn-download" id="downloadBtn" onclick="downloadZip()" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download All (ZIP)
+      </button>
+    </div>
+
+    <div id="slidesContainer">
+      <div class="empty-state">
+        <div class="icon-circle">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#4A6B66" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+        </div>
+        <h3>Your carousel begins here</h3>
+        <p>Choose your framework, select your colours, paste your content, and let the studio do its thing.</p>
+      </div>
+    </div>
+
+    <div class="caption-output" id="captionOutput">
+      <h3>Caption Copy</h3>
+      <div class="caption-text" id="captionText"></div>
+      <button class="btn-copy" onclick="copyCaption()">Copy Caption</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Hidden canvas for rendering -->
+<canvas id="renderCanvas" width="1080" height="1080" style="display:none;"></canvas>
+
+<script>
+// ========== STATE ==========
+let state = {
+  type: 'signature',
+  scheme: 'classic',
+  pillar: 'regulation',
+  cta: 'audit',
+  headlineSize: 90,
+  slides: [],
+  blobs: [],
+  caption: ''
+};
+
+// ========== COLOUR SCHEMES ==========
+const SCHEMES = {
+  classic: {
+    hookBg: '#2C3E50', hookText: '#F4EFE7', hookAccent: '#E8C88E',
+    bodyBgs: ['#2C3E50','#4A6B66','#2C3E50','#000000','#2C3E50'],
+    bodyText: '#F4EFE7', bodyAccent: '#E8C88E',
+    ctaBg: '#4A6B66', ctaText: '#F4EFE7', ctaButton: '#F4EFE7', ctaButtonText: '#2C3E50',
+    labelColor: '#E8C88E', divider: '#E8C88E', circle: '#4A6B66'
+  },
+  ocean: {
+    hookBg: '#4A6B66', hookText: '#F4EFE7', hookAccent: '#F4EFE7',
+    bodyBgs: ['#4A6B66','#2C3E50','#4A6B66','#2C3E50','#4A6B66'],
+    bodyText: '#F4EFE7', bodyAccent: '#A8B5A6',
+    ctaBg: '#2C3E50', ctaText: '#F4EFE7', ctaButton: '#E8C88E', ctaButtonText: '#2C3E50',
+    labelColor: '#A8B5A6', divider: '#A8B5A6', circle: '#A8B5A6'
+  },
+  warm: {
+    hookBg: '#C97958', hookText: '#F4EFE7', hookAccent: '#F4EFE7',
+    bodyBgs: ['#2C3E50','#C97958','#2C3E50','#000000','#2C3E50'],
+    bodyText: '#F4EFE7', bodyAccent: '#C97958',
+    ctaBg: '#C97958', ctaText: '#F4EFE7', ctaButton: '#F4EFE7', ctaButtonText: '#C97958',
+    labelColor: '#E8C88E', divider: '#E8C88E', circle: '#C97958'
+  },
+  minimal: {
+    hookBg: '#000000', hookText: '#F4EFE7', hookAccent: '#E8C88E',
+    bodyBgs: ['#000000','#2C3E50','#000000','#2C3E50','#000000'],
+    bodyText: '#F4EFE7', bodyAccent: '#E8C88E',
+    ctaBg: '#2C3E50', ctaText: '#F4EFE7', ctaButton: '#F4EFE7', ctaButtonText: '#2C3E50',
+    labelColor: '#E8C88E', divider: '#E8C88E', circle: '#2C3E50'
+  },
+  sage: {
+    hookBg: '#A8B5A6', hookText: '#2C3E50', hookAccent: '#2C3E50',
+    bodyBgs: ['#2C3E50','#A8B5A6','#2C3E50','#A8B5A6','#2C3E50'],
+    bodyText: '#F4EFE7', bodyAccent: '#A8B5A6',
+    ctaBg: '#A8B5A6', ctaText: '#2C3E50', ctaButton: '#2C3E50', ctaButtonText: '#F4EFE7',
+    labelColor: '#E8C88E', divider: '#E8C88E', circle: '#A8B5A6'
+  },
+  golden: {
+    hookBg: '#E8C88E', hookText: '#2C3E50', hookAccent: '#2C3E50',
+    bodyBgs: ['#2C3E50','#E8C88E','#2C3E50','#000000','#2C3E50'],
+    bodyText: '#F4EFE7', bodyAccent: '#E8C88E',
+    ctaBg: '#2C3E50', ctaText: '#E8C88E', ctaButton: '#E8C88E', ctaButtonText: '#2C3E50',
+    labelColor: '#E8C88E', divider: '#E8C88E', circle: '#E8C88E'
+  }
+};
+
+// ========== CTA MAP ==========
+const CTA_MAP = {
+  audit: { context: 'THREE MINUTES', headline: 'Take the Baseline Audit.', subline: 'Find out where your nervous system is actually operating from.', button: 'Start the 3-Minute Audit', url: 'angiemarieglobal.com/baseline' },
+  baseline: { context: 'YOUR NEXT STEP', headline: 'DM me the word BASELINE.', subline: 'I will send you the free audit link personally.', button: 'DM BASELINE', url: '@angiemarieglobal' },
+  reset: { context: 'SEVEN DAYS', headline: 'Start the Micro Reset.', subline: 'Seven days. One pattern interrupted. A new baseline begins.', button: 'Join the Micro Reset', url: 'angiemarieglobal.com/micro-reset' },
+  save: { context: 'COME BACK TO THIS', headline: 'Save this post.', subline: 'You will need it on the day the loop starts again.', button: 'Save + Share', url: '@angiemarieglobal' }
+};
+
+// ========== PILLAR LABELS ==========
+const PILLAR_LABELS = {
+  regulation: 'REGULATION / RESET',
+  identity: 'IDENTITY / BELIEF SHIFT',
+  abundance: 'ABUNDANCE',
+  proof: 'LIVING PROOF'
+};
+
+// ========== UI HANDLERS ==========
+function selectType(btn) {
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  state.type = btn.dataset.type;
+}
+
+function selectColour(btn) {
+  document.querySelectorAll('.colour-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  state.scheme = btn.dataset.scheme;
+}
+
+function showToast(msg, duration = 3000) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('visible');
+  setTimeout(() => toast.classList.remove('visible'), duration);
+}
+
+function copyCaption() {
+  navigator.clipboard.writeText(state.caption).then(() => showToast('Caption copied'));
+}
+
+// ========== PARSE PROMPT ==========
+function parsePrompt(text) {
+  const slides = [];
+
+  // Try to parse structured slide content
+  // Look for patterns like "Slide 1:", "SLIDE 1:", "1.", "Hook:", etc.
+  const slidePatterns = [
+    /(?:slide\s*(\d+)[:\s-]+|^(\d+)\.\s*)/gim,
+    /(?:hook|slide\s*1)[:\s-]+([\s\S]*?)(?=(?:slide\s*\d|body|cta|\d\.\s)|$)/gi,
+  ];
+
+  // Split by slide markers
+  const rawText = text.trim();
+
+  // Try JSON first
+  try {
+    const json = JSON.parse(rawText);
+    if (json.slides) return json.slides;
+  } catch(e) {}
+
+  // Try to split by "Slide X" or numbered markers
+  const slideRegex = /(?:^|\n)(?:slide\s*(\d+)|(\d+)\.)\s*[:\-\s]*(.*?)(?=(?:\n(?:slide\s*\d|\d+\.))|$)/gis;
+  let match;
+  let found = [];
+
+  while ((match = slideRegex.exec(rawText)) !== null) {
+    const num = parseInt(match[1] || match[2]);
+    const content = match[3]?.trim();
+    if (content) found.push({ num, content });
+  }
+
+  if (found.length >= 3) {
+    return found.map((f, i) => {
+      const lines = f.content.split(/\n/).map(l => l.trim()).filter(l => l);
+      if (i === 0) {
+        return { num: 1, type: 'hook', label: null, lines };
+      } else if (i === found.length - 1) {
+        return { num: f.num, type: 'cta', lines };
+      } else {
+        return { num: f.num, type: 'body', anchor: lines[0] || '', supporting: lines.slice(1) };
+      }
+    });
+  }
+
+  // Fallback: split by double newlines or paragraph breaks
+  const paragraphs = rawText.split(/\n\s*\n/).map(p => p.trim()).filter(p => p);
+
+  if (paragraphs.length >= 2) {
+    const totalSlides = state.type === 'signature' ? 7 : 10;
+    const bodyCount = totalSlides - 2;
+
+    // First paragraph = hook
+    const hookLines = paragraphs[0].split(/\n/).map(l => l.trim()).filter(l => l);
+    slides.push({ num: 1, type: 'hook', label: null, lines: hookLines });
+
+    // Middle paragraphs = body slides
+    for (let i = 1; i < paragraphs.length && slides.length <= bodyCount; i++) {
+      const lines = paragraphs[i].split(/\n/).map(l => l.trim()).filter(l => l);
+      slides.push({
+        num: slides.length + 1,
+        type: 'body',
+        anchor: lines[0] || '',
+        supporting: lines.slice(1)
+      });
+    }
+
+    // Pad body slides if needed
+    while (slides.length < bodyCount + 1) {
+      slides.push({ num: slides.length + 1, type: 'body', anchor: '', supporting: [] });
+    }
+
+    // CTA slide
+    slides.push({ num: slides.length + 1, type: 'cta', lines: [] });
+
+    return slides;
+  }
+
+  // Last resort: single block of text, split into lines
+  const allLines = rawText.split(/\n/).map(l => l.trim()).filter(l => l);
+  const totalSlides = state.type === 'signature' ? 7 : 10;
+  const bodyCount = totalSlides - 2;
+  const linesPerSlide = Math.max(1, Math.ceil(allLines.length / totalSlides));
+
+  // Hook
+  slides.push({ num: 1, type: 'hook', label: null, lines: allLines.slice(0, Math.min(2, linesPerSlide)) });
+
+  let idx = Math.min(2, linesPerSlide);
+  for (let s = 0; s < bodyCount; s++) {
+    const chunk = allLines.slice(idx, idx + linesPerSlide);
+    slides.push({ num: s + 2, type: 'body', anchor: chunk[0] || '', supporting: chunk.slice(1) });
+    idx += linesPerSlide;
+  }
+
+  slides.push({ num: totalSlides, type: 'cta', lines: [] });
+
+  return slides;
+}
+
+// ========== CANVAS RENDERING ==========
+function drawSlide(canvas, slide, scheme, slideNum, totalSlides) {
+  const ctx = canvas.getContext('2d');
+  const S = SCHEMES[scheme];
+  const headSize = state.headlineSize;
+
+  // Determine background
+  let bg, textColor, accentColor;
+
+  if (slide.type === 'hook') {
+    bg = S.hookBg;
+    textColor = S.hookText;
+    accentColor = S.hookAccent;
+  } else if (slide.type === 'cta') {
+    bg = S.ctaBg;
+    textColor = S.ctaText;
+    accentColor = S.ctaButton;
+  } else {
+    const bodyIdx = slideNum - 2;
+    bg = S.bodyBgs[bodyIdx % S.bodyBgs.length];
+    textColor = S.bodyText;
+    accentColor = S.bodyAccent;
+  }
+
+  // Fill background
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, 1080, 1080);
+
+  // Geometric accent circle (subtle)
+  ctx.beginPath();
+  ctx.arc(920, 160, 120, 0, Math.PI * 2);
+  ctx.fillStyle = S.circle;
+  ctx.globalAlpha = 0.08;
+  ctx.fill();
+  ctx.globalAlpha = 1;
+
+  const pad = 100;
+  const contentW = 880;
+
+  if (slide.type === 'hook') {
+    // Label (if present)
+    let y = 380;
+    if (slide.label) {
+      ctx.font = '500 24px Montserrat';
+      ctx.fillStyle = accentColor;
+      ctx.globalAlpha = 0.9;
+      ctx.textAlign = 'center';
+      ctx.letterSpacing = '4px';
+      ctx.fillText(slide.label.toUpperCase(), 540, y);
+      ctx.globalAlpha = 1;
+      y += 60;
+    }
+
+    // Main hook lines
+    ctx.font = `400 ${headSize}px Forum`;
+    ctx.fillStyle = textColor;
+    ctx.textAlign = 'center';
+
+    const lines = slide.lines || [''];
+    const lineHeight = headSize * 1.3;
+    const totalH = lines.length * lineHeight;
+    let startY = slide.label ? y + 20 : (1080 - totalH) / 2 + headSize * 0.3;
+
+    lines.forEach((line, i) => {
+      ctx.fillText(line, 540, startY + i * lineHeight);
+    });
+
+    // Divider
+    ctx.fillStyle = S.divider;
+    ctx.fillRect(520, startY + lines.length * lineHeight + 30, 40, 2);
+
+  } else if (slide.type === 'cta') {
+    const cta = CTA_MAP[state.cta];
+
+    // Context label
+    ctx.font = '500 22px Montserrat';
+    ctx.fillStyle = textColor;
+    ctx.globalAlpha = 0.7;
+    ctx.textAlign = 'center';
+    ctx.fillText(cta.context, 540, 320);
+    ctx.globalAlpha = 1;
+
+    // Divider
+    ctx.fillStyle = S.divider;
+    ctx.fillRect(520, 345, 40, 1.5);
+
+    // Main CTA line
+    ctx.font = `400 ${Math.round(headSize * 0.75)}px Forum`;
+    ctx.fillStyle = textColor;
+    ctx.fillText(cta.headline, 540, 440);
+
+    // Subline
+    ctx.font = '400 28px Montserrat';
+    ctx.fillStyle = textColor;
+    ctx.globalAlpha = 0.75;
+    wrapText(ctx, cta.subline, 540, 500, contentW - 80, 38);
+    ctx.globalAlpha = 1;
+
+    // Button
+    const btnW = 360;
+    const btnH = 56;
+    const btnX = (1080 - btnW) / 2;
+    const btnY = 620;
+
+    roundRect(ctx, btnX, btnY, btnW, btnH, 6);
+    ctx.fillStyle = accentColor;
+    ctx.fill();
+
+    ctx.font = '500 16px Montserrat';
+    ctx.fillStyle = S.ctaButtonText;
+    ctx.textAlign = 'center';
+    ctx.fillText(cta.button, 540, btnY + 34);
+
+    // URL
+    ctx.font = '300 20px Montserrat';
+    ctx.fillStyle = textColor;
+    ctx.globalAlpha = 0.5;
+    ctx.fillText(cta.url, 540, btnY + btnH + 40);
+    ctx.globalAlpha = 1;
+
+  } else {
+    // Body slide
+    const anchor = slide.anchor || '';
+    const supporting = slide.supporting || [];
+
+    // Anchor line
+    ctx.font = `400 ${Math.round(headSize * 0.65)}px Forum`;
+    ctx.fillStyle = textColor;
+    ctx.textAlign = 'left';
+
+    const anchorLines = wrapTextLines(ctx, anchor, contentW);
+    const anchorLineH = Math.round(headSize * 0.65) * 1.4;
+    const supportLineH = 38;
+
+    const totalContentH = anchorLines.length * anchorLineH + 30 + supporting.length * supportLineH;
+    let startY = Math.max(pad + 60, (1080 - totalContentH) / 2);
+
+    anchorLines.forEach((line, i) => {
+      ctx.fillText(line, pad, startY + i * anchorLineH);
+    });
+
+    // Divider
+    const divY = startY + anchorLines.length * anchorLineH + 20;
+    ctx.fillStyle = S.divider;
+    ctx.fillRect(pad, divY, 40, 1.5);
+
+    // Supporting lines
+    ctx.font = '400 28px Montserrat';
+    ctx.fillStyle = textColor;
+    ctx.globalAlpha = 0.85;
+    let supY = divY + 35;
+
+    supporting.forEach((line, i) => {
+      const wrapped = wrapTextLines(ctx, line, contentW);
+      wrapped.forEach((wl, j) => {
+        ctx.fillText(wl, pad, supY);
+        supY += supportLineH;
+      });
+      supY += 8;
+    });
+    ctx.globalAlpha = 1;
+  }
+
+  // Slide counter (bottom right)
+  ctx.font = '300 22px Montserrat';
+  ctx.fillStyle = textColor;
+  ctx.globalAlpha = 0.4;
+  ctx.textAlign = 'right';
+  ctx.fillText(`${slideNum} / ${totalSlides}`, 1080 - pad, 1080 - pad + 10);
+
+  // Watermark (bottom left)
+  ctx.textAlign = 'left';
+  ctx.fillText('@angiemarieglobal', pad, 1080 - pad + 10);
+  ctx.globalAlpha = 1;
+
+  // Pillar tag (top left, subtle)
+  ctx.font = '500 14px Montserrat';
+  ctx.fillStyle = textColor;
+  ctx.globalAlpha = 0.25;
+  ctx.textAlign = 'left';
+  ctx.fillText(PILLAR_LABELS[state.pillar], pad, pad - 20);
+  ctx.globalAlpha = 1;
+}
+
+// Helper: wrap text and return lines array
+function wrapTextLines(ctx, text, maxWidth) {
+  const words = text.split(' ');
+  const lines = [];
+  let current = '';
+
+  words.forEach(word => {
+    const test = current ? current + ' ' + word : word;
+    if (ctx.measureText(test).width > maxWidth && current) {
+      lines.push(current);
+      current = word;
+    } else {
+      current = test;
+    }
+  });
+  if (current) lines.push(current);
+  return lines.length ? lines : [''];
+}
+
+// Helper: draw wrapped text centered
+function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+  const lines = wrapTextLines(ctx, text, maxWidth);
+  lines.forEach((line, i) => {
+    ctx.fillText(line, x, y + i * lineHeight);
+  });
+}
+
+// Helper: rounded rect path
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+// ========== GENERATE ==========
+async function generateCarousel() {
+  const prompt = document.getElementById('promptInput').value.trim();
+  if (!prompt) {
+    showToast('Paste your carousel content first');
+    return;
+  }
+
+  state.pillar = document.getElementById('pillarSelect').value;
+  state.cta = document.getElementById('ctaSelect').value;
+  state.headlineSize = parseInt(document.getElementById('headlineSize').value);
+
+  const btn = document.getElementById('generateBtn');
+  btn.disabled = true;
+  btn.classList.add('generating');
+  btn.textContent = 'Generating...';
+
+  const progress = document.getElementById('progressContainer');
+  progress.classList.add('visible');
+
+  // Parse the prompt into slides
+  let slides = parsePrompt(prompt);
+  const totalSlides = state.type === 'signature' ? 7 : 10;
+
+  // Ensure correct number of slides
+  while (slides.length < totalSlides) {
+    slides.splice(slides.length - 1, 0, { num: slides.length, type: 'body', anchor: '', supporting: [] });
+  }
+  slides = slides.slice(0, totalSlides);
+
+  // Re-number and ensure types
+  slides[0].type = 'hook';
+  slides[slides.length - 1].type = 'cta';
+  slides.forEach((s, i) => { s.num = i + 1; });
+
+  state.slides = slides;
+  state.blobs = [];
+
+  const canvas = document.getElementById('renderCanvas');
+  const container = document.getElementById('slidesContainer');
+  container.innerHTML = '';
+
+  const grid = document.createElement('div');
+  grid.className = 'slides-grid';
+  container.appendChild(grid);
+
+  // Extract caption from prompt (everything after last slide content or the full prompt)
+  const captionMatch = prompt.match(/caption[:\s]+([\s\S]+?)(?:hashtag|#|$)/i);
+  state.caption = captionMatch ? captionMatch[1].trim() : '';
+
+  // Wait for fonts to load
+  await document.fonts.ready;
+
+  for (let i = 0; i < slides.length; i++) {
+    // Update progress
+    const pct = Math.round(((i + 1) / slides.length) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = `Rendering slide ${i + 1} of ${slides.length}...`;
+
+    // Small delay for UI updates
+    await new Promise(r => setTimeout(r, 80));
+
+    // Render slide
+    drawSlide(canvas, slides[i], state.scheme, i + 1, slides.length);
+
+    // Convert to blob
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+    state.blobs.push(blob);
+
+    // Create preview
+    const card = document.createElement('div');
+    card.className = 'slide-card';
+
+    const img = document.createElement('img');
+    img.src = URL.createObjectURL(blob);
+    img.alt = `Slide ${i + 1}`;
+    card.appendChild(img);
+
+    const label = document.createElement('div');
+    label.className = 'slide-label';
+    const typeLabel = slides[i].type === 'hook' ? 'Hook' : slides[i].type === 'cta' ? 'CTA' : `Body ${i}`;
+    label.textContent = `Slide ${i + 1} - ${typeLabel}`;
+    card.appendChild(label);
+
+    grid.appendChild(card);
+  }
+
+  // Show caption if available
+  if (state.caption) {
+    const captionEl = document.getElementById('captionOutput');
+    document.getElementById('captionText').textContent = state.caption;
+    captionEl.classList.add('visible');
+  }
+
+  // Reset button
+  btn.disabled = false;
+  btn.classList.remove('generating');
+  btn.textContent = 'Generate Carousel';
+  progress.classList.remove('visible');
+
+  // Enable download
+  document.getElementById('downloadBtn').disabled = false;
+
+  showToast(`${slides.length} slides generated`);
+}
+
+// ========== DOWNLOAD ZIP ==========
+async function downloadZip() {
+  if (!state.blobs.length) return;
+
+  showToast('Creating ZIP...');
+
+  const zip = new JSZip();
+  const folder = zip.folder('carousel');
+
+  state.blobs.forEach((blob, i) => {
+    const slideType = state.slides[i].type;
+    const name = `slide_${String(i + 1).padStart(2, '0')}_${slideType}.png`;
+    folder.file(name, blob);
+  });
+
+  // Add caption as text file
+  if (state.caption) {
+    folder.file('caption.txt', state.caption);
+  }
+
+  const content = await zip.generateAsync({ type: 'blob' });
+  const timestamp = new Date().toISOString().slice(0, 10);
+  saveAs(content, `amg-carousel-${state.scheme}-${timestamp}.zip`);
+
+  showToast('ZIP downloaded');
+}
+
+// ========== INIT ==========
+document.addEventListener('DOMContentLoaded', () => {
+  // Pre-load fonts
+  document.fonts.load('400 48px Forum');
+  document.fonts.load('400 24px Montserrat');
+  document.fonts.load('300 24px Montserrat');
+  document.fonts.load('500 24px Montserrat');
+});
+</script>
+</body>
+</html>
